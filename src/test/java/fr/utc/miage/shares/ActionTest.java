@@ -44,7 +44,6 @@ class ActionTest {
     @Test
     void testEqualsWithSameObject() {
         final Action action = new ActionImpl(FOO_SHARE1);
-
         Assertions.assertTrue(action.equals(action));
     }
 
