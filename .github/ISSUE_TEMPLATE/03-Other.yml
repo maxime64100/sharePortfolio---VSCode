@@ -1,0 +1,23 @@
+# Copyright 2025 David Navarre <David.Navarre@irit.fr>.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: Other
+description: Permet de consigner les éléments à ajouter au backlog, autres que les user stories et les tests (par exemple, les éléments à faire après les revues de code).
+title: "[Other]: "
+body:
+  - type: input
+    id: todo
+    attributes:
+      label: Eléments à ajouter au backlog
+    validations:
+      required: true

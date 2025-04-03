@@ -1,0 +1,110 @@
+# Copyright 2025 David Navarre <David.Navarre@irit.fr>.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: Scenario de test
+description: Formalisation d'un scénario de test en suivant le langage GHERKIN. Ce template s'utilise en sous-issue d'une user story.
+title: "[Test]: "
+labels: ["test"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        "ATTENTION à bien respecter GHERKIN avec au maximum 2 extensions de condition (AND et/ou BUT).
+        Un scénario de test doit être clair et concis : il vaut mieux décomposer des scénarios complexes en plusieurs scénarios.
+        Le langage technique est à éviter.
+        En fonction du cas, GIVEN et WHEN ne sont pas à toujours à utiliser ensemble (par exemple, lorsqu'il un scénario ne dépend pas du contexte)."
+  - type: markdown
+    attributes:
+      value: "## GIVEN"
+  - type: textarea
+    id: given
+    attributes:
+      label: "Given"
+      description: Description du contexte général.
+      placeholder: "Etant donné que ..."
+    validations:
+      required: false
+  - type: textarea
+    id: given-cond-1_2
+    attributes:
+      label: Extension de condition 1
+      placeholder: "Et que / Mais que ..."
+    validations:
+      required: false
+  - type: textarea
+    id: given-cond-2_2
+    attributes:
+      label: Extension de condition 2
+      placeholder: "Et que / Mais que ..."
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: "## WHEN"
+  - type: textarea
+    id: when
+    attributes:
+      label: When
+      description: Description d'une action faite par un utilisateur ou d'un événement déclencheur.
+      placeholder: "Lorsque ..."
+    validations:
+      required: false
+  - type: textarea
+    id: when-cond-1_2
+    attributes:
+      label: Extension de condition 1
+      placeholder: "Et que / Mais que ..."
+    validations:
+      required: false
+  - type: textarea
+    id: when-cond-2_2
+    attributes:
+      label: Extension de condition 2
+      placeholder: "Et que / Mais que ..."
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: "## Then"
+  - type: textarea
+    id: then
+    attributes:
+      label: Then
+      description: Description du comportement attendu du système.
+      placeholder: "Alors ..."
+    validations:
+      required: true
+  - type: textarea
+    id: then-cond-1_2
+    attributes:
+      label: Extension de condition 1
+      placeholder: "Et / Mais ..."
+    validations:
+      required: false
+  - type: textarea
+    id: then-cond-2_2
+    attributes:
+      label: Extension de condition 2
+      placeholder: "Et / Mais ..."
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: "## EXAMPLES"
+  - type: textarea
+    attributes:
+      label: Exemples
+      description: "[Facultatif] Un ou plusieurs exemples illustrant ce scénario."
+    validations:
+      required: false
+      
