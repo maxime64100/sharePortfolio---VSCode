@@ -24,6 +24,11 @@ import java.util.Objects;
  */
 public abstract class Action {
 
+    /**
+     * Valeur par défaut de l'action.
+     */
+    private static final int DEFAULT_ACTION_VALUE = 0;
+
     private final String libelle;
 
     /**

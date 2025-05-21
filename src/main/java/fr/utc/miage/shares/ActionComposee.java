@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 David Navarre &lt;David.Navarre at irit.fr&gt;.
+ * Copyright 2025 Mathys Alzuria, Tom Montbord, Colas Naudi, Mathis Lague, Maxime Fallek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Allows the creation of simple Action objects.
+ * Objet ActionComposee : permet de créer des actions composées à partir
  *
- * @author David Navarre &lt;David.Navarre at irit.fr&gt;
+ * @author Mathys Alzuria, Tom Montbord, Colas Naudi, Mathis Lague, Maxime Fallek
  */
 public class ActionComposee extends Action {
 
-    private static final int DEFAULT_ACTION_VALUE = 0;
-
+    /**
+     * Map des proportions des actions simples qui composent l'action.
+     */
     private Map<ActionSimple, Float> mapProportion = new HashMap<>();
 
-    // attribut lien
+    /**
+     * Cours de l'action : valeur pour un jour donné.
+     */
     private final Map<Jour, Float> mapCours;
 
-    // constructeur
+    /**
+     * Constructeur de la classe ActionComposee.
+     *
+     * @param libelle le libellé de l'action
+     * @param mapProportion la map des proportions des actions simples qui composent l'action
+     */
     public ActionComposee(final String libelle, Map<ActionSimple, Float> mapProportion) {
         // Action simple initialisée comme 1 action
         super(libelle);
@@ -41,19 +49,20 @@ public class ActionComposee extends Action {
         this.mapCours = new HashMap<>();
     }
 
-    // enrg possible si pas de cours pour ce jour
-    public void enrgCours(final Jour j, final float v) {
-        if (!this.mapCours.containsKey(j)) {
-            this.mapCours.put(j, v);
-        }
-    }
-
+    /**
+     * Récupération de la valeur de l'action pour un jour donné.
+     *
+     * @param j le jour donné
+     * @return la valeur de l'action
+     */
     @Override
     public float valeur(final Jour j) {
-        if (this.mapCours.containsKey(j)) {
-            return this.mapCours.get(j);
-        } else {
-            return DEFAULT_ACTION_VALUE;
+        float valeurActionComposee = 0;
+        for (Map.Entry<ActionSimple, Float> entry : mapProportion.entrySet()) {
+            ActionSimple actionSimple = entry.getKey();
+            Float proportion = entry.getValue();
+            valeurActionComposee += actionSimple.valeur(j) * proportion;
         }
+        return valeurActionComposee;
     }
 }
