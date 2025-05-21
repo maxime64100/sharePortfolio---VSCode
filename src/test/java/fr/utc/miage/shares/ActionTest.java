@@ -97,5 +97,4 @@ class ActionTest {
             return 0.0F;
         }
     }
-
 }
