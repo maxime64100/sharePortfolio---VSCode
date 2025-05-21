@@ -50,7 +50,10 @@ class ActionSimpleTest {
     @Test
     public void testGetValeurWithGoodValue() {
         setupActions();
-        Assertions.assertEquals(SHARE_VALUE1, actionSimple1.valeur(jour1));
+        Assertions.assertAll(
+                ()-> Assertions.assertEquals(SHARE_VALUE1, actionSimple1.valeur(jour1)),
+                ()-> Assertions.assertEquals(SHARE_VALUE2, actionSimple2.valeur(jour2))
+        );
     }
 
     @Test
