@@ -17,29 +17,30 @@ package fr.utc.miage.shares;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
+
 public class PortefeuilleTest {
-    @Test
-    void testAcheter() {
 
+    @Test
+    void testAcheterActionComposeeNonDetenue() {
+        Portefeuille portefeuille = new Portefeuille();
+        Action action = new ActionComposee("Action composée", new HashMap<>());
+        portefeuille.acheter(action, 10);
+        assert (portefeuille.getQuantite(action) == 10);
     }
 
-    @Test
-    void testGetActions() {
-
-    }
 
     @Test
-    void testGetQuantite() {
+    void testAcheterActionComposeeDetenue() {
+        Portefeuille portefeuille = new Portefeuille();
+        Action action1 = new ActionComposee("Action composée 1", new HashMap<>());
+        Action action2 = new ActionComposee("Action composée 2", new HashMap<>());
+        portefeuille.acheter(action1, 10);
+        portefeuille.acheter(action2, 20);
+        portefeuille.acheter(action1, 30);
 
-    }
-
-    @Test
-    void testValeur() {
-
-    }
-
-    @Test
-    void testVendre() {
-
+        assert (portefeuille.getQuantite(action1) == 40);
+        assert (portefeuille.getQuantite(action2) == 20);
     }
 }
