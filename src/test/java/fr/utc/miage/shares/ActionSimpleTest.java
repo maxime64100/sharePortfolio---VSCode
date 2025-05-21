@@ -27,6 +27,15 @@ class ActionSimpleTest {
         assertEquals(200.0f, action.valeur(new Jour(2025, 1)));
     }
 
+    @Test
+    void dateFutureSansValeurDisponible() {
+        // Enregistrement du cours de l'action pour une date précise
+        action.enrgCours(new Jour(2023, 122), 150.0f);
+
+        // Vérification de la valeur de l'action pour une date future sans valeur disponible
+        assertEquals(0.0f, action.valeur(new Jour(2024, 1)));
+    }
+
 
 
 }
