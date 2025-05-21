@@ -36,7 +36,7 @@ public class Portefeuille {
      * Surcharge de la méthode vendre, par défault la quantité d'action vendu est à 1
      * @param action
      */
-    public void vendre(Action action) {
+    public void vendreUne(Action action) {
         vendre(action, 1);
     }
 

@@ -31,9 +31,9 @@ public class PortefeuilleTest {
 
     private static ActionSimple actionSimple1;
     private static ActionSimple actionSimple2;
-    private static Jour jour1 = new Jour(CURRENT_YEAR, CURRENT_DAY);
-    private static Jour jour2 = new Jour(CURRENT_YEAR, CURRENT_DAY+1);
-    private static Jour jour3 = new Jour(CURRENT_YEAR, CURRENT_DAY+2);
+    private static final Jour jour1 = new Jour(CURRENT_YEAR, CURRENT_DAY);
+    private static final Jour jour2 = new Jour(CURRENT_YEAR, CURRENT_DAY+1);
+    private static final Jour jour3 = new Jour(CURRENT_YEAR, CURRENT_DAY+2);
 
     private static Portefeuille portefeuille;
 
@@ -77,7 +77,7 @@ public class PortefeuilleTest {
         portefeuille = new Portefeuille();
         portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
         portefeuille.acheter(actionSimple2, QUANTITY_VALUE2);
-        portefeuille.vendre(actionSimple2);
+        portefeuille.vendreUne(actionSimple2);
         Assertions.assertAll(
                 ()->Assertions.assertEquals(portefeuille.getActions().get(actionSimple1), QUANTITY_VALUE1),
                 ()->Assertions.assertEquals(portefeuille.getActions().get(actionSimple2), QUANTITY_VALUE1)
@@ -89,7 +89,6 @@ public class PortefeuilleTest {
         setupActions();
         portefeuille = new Portefeuille();
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> portefeuille.vendre(actionSimple1, QUANTITY_VALUE1));
+                () -> portefeuille.vendreUne(actionSimple1));
     }
-
 }

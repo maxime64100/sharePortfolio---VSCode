@@ -44,7 +44,23 @@ class ActionSimpleTest {
 
         actionSimple2.enrgCours(jour1, SHARE_VALUE1);
         actionSimple2.enrgCours(jour2, SHARE_VALUE2);
-        actionSimple2.enrgCours(jour3, SHARE_VALUE3);
+    }
+
+    @Test
+    public void testConstructorWithGoodValuesShouldWork() {
+        Assertions.assertDoesNotThrow(() -> new ActionSimple(FOO_SHARE1));
+    }
+
+    @Test
+    public void testConstructorWithBadValuesShouldFail() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ActionSimple(null));
+    }
+
+    @Test
+    public void testEnrgCoursAlreadySet() {
+        setupActions();
+        actionSimple1.enrgCours(jour1, SHARE_VALUE2);
+        Assertions.assertNotEquals(SHARE_VALUE2, actionSimple1.valeur(jour1));
     }
 
     @Test
@@ -57,7 +73,8 @@ class ActionSimpleTest {
     }
 
     @Test
-    public void testVendreValeurWithGoodValue() {
-
+    public void testGetValeurWithBadValue() {
+        setupActions();
+        Assertions.assertEquals(ActionSimple.DEFAULT_ACTION_VALUE, actionSimple2.valeur(jour3));
     }
 }
