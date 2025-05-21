@@ -25,13 +25,13 @@ import java.util.Map;
  */
 public class ActionSimple extends Action {
 
-    private static final int DEFAULT_ACTION_VALUE = 0;
+    public static final int DEFAULT_ACTION_VALUE = 0;
 
     // attribut lien
     private final Map<Jour, Float> mapCours;
 
     // constructeur
-    public ActionSimple(final String libelle) {
+    public ActionSimple(final String libelle) throws IllegalArgumentException {
         // Action simple initialisée comme 1 action
         super(libelle);
         // init spécifique

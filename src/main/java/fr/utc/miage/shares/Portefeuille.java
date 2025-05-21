@@ -32,6 +32,19 @@ public class Portefeuille {
         actions.put(action, actions.getOrDefault(action, 0) + quantite);
     }
 
+    /**
+     * Surcharge de la méthode vendre, par défault la quantité d'action vendu est à 1
+     * @param action
+     */
+    public void vendreUne(Action action) {
+        vendre(action, 1);
+    }
+
+    /**
+     * Supprime l'action du portefeuille si l'action est possédé en quantité suffisante dans le portefeuille.
+     * @param action
+     * @param quantite
+     */
     public void vendre(Action action, int quantite) {
         if (!actions.containsKey(action)) {
             throw new IllegalArgumentException("Action non détenue dans le portefeuille.");
