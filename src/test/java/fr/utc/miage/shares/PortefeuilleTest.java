@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 David Navarre &lt;David.Navarre at irit.fr&gt;.
+ * Copyright 2024 David Navarre &lt;David.Navarre at irit.fr&gt;.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,54 @@ import org.junit.jupiter.api.Test;
 
 public class PortefeuilleTest {
     @Test
-    void testAcheter() {
+    void testAcheterActionSimpleNonDetennue() {
+        Action action = new ActionSimple("Action1");
 
+        Portefeuille portefeuille = new Portefeuille();
+        portefeuille.acheter(action, 10);
+
+        assert portefeuille.getActions().containsKey(action);
+        assert portefeuille.getQuantite(action) == 10;
+    }
+
+    @Test
+    void testAcheterActionSimpleDetennue() {
+        Action action = new ActionSimple("Action1");
+        Action action2 = new ActionSimple("Action2");
+
+        Portefeuille portefeuille = new Portefeuille();
+        portefeuille.acheter(action, 10);
+        portefeuille.acheter(action2, 5);
+        portefeuille.acheter(action, 5);
+
+        assert portefeuille.getActions().containsKey(action);
+        assert portefeuille.getQuantite(action) == 15;
+        assert portefeuille.getActions().containsKey(action2);
+        assert portefeuille.getQuantite(action2) == 5;
+    }
+
+    @Test
+    void testAcheterActionSimpleQuantiteNulle() {
+        Action action = new ActionSimple("Action1");
+        Portefeuille portefeuille = new Portefeuille();
+
+        try {
+            portefeuille.acheter(action, 0);
+        } catch (IllegalArgumentException e) {
+            assert e.getMessage().equals("La quantité doit être positive.");
+        }
+    }
+
+    @Test
+    void testAcheterActionSimpleQuantiteNegative() {
+        Action action = new ActionSimple("Action1");
+        Portefeuille portefeuille = new Portefeuille();
+
+        try {
+            portefeuille.acheter(action, -5);
+        } catch (IllegalArgumentException e) {
+            assert e.getMessage().equals("La quantité doit être positive.");
+        }
     }
 
     @Test
