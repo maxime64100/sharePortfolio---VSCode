@@ -52,7 +52,7 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVendreUne() {
+    void testVendreUneActionComposee() {
         //Given un portefeuille d'action
         Portefeuille portefeuille = new Portefeuille();
         ActionSimple france2 = new ActionSimple("France 2");
@@ -79,5 +79,26 @@ public class PortefeuilleTest {
                 () -> Assertions.assertEquals(DEFAULT_QUANTITE, actions.get(france3)),
                 () -> Assertions.assertEquals(DEFAULT_QUANTITE, actions.get(tisseo))
         );
+    }
+
+    @Test
+    void testVendreUneActionComposeeNonPossedee() {
+        //Given un portefeuille d'action
+        Portefeuille portefeuille = new Portefeuille();
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        Action tisseo = new ActionSimple("Tisseo");
+        Map<ActionSimple, Float> props = Map.of(
+                france2, 0.4f,
+                france3, 0.6f
+        );
+        Action franceTelevision = new ActionComposee("France Television", props);
+        portefeuille.acheter(france2, DEFAULT_QUANTITE);
+        portefeuille.acheter(france3, DEFAULT_QUANTITE);
+        portefeuille.acheter(tisseo, DEFAULT_QUANTITE);
+
+        // When je vends une action composée
+        // Then levée d'une exception, car non possédée
+        Assertions.assertThrows(IllegalArgumentException.class, () -> portefeuille.vendreUne(franceTelevision));
     }
 }
