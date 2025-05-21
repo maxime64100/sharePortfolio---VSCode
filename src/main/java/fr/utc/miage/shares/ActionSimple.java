@@ -15,8 +15,11 @@
  */
 package fr.utc.miage.shares;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Allows the creation of simple Action objects.
@@ -25,13 +28,13 @@ import java.util.Map;
  */
 public class ActionSimple extends Action {
 
-    private static final int DEFAULT_ACTION_VALUE = 0;
+    public static final int DEFAULT_ACTION_VALUE = 0;
 
     // attribut lien
     private final Map<Jour, Float> mapCours;
 
     // constructeur
-    public ActionSimple(final String libelle) {
+    public ActionSimple(final String libelle) throws IllegalArgumentException {
         // Action simple initialisée comme 1 action
         super(libelle);
         // init spécifique
@@ -47,10 +50,40 @@ public class ActionSimple extends Action {
 
     @Override
     public float valeur(final Jour j) {
-        if (this.mapCours.containsKey(j)) {
-            return this.mapCours.get(j);
+        Jour currentDay = j;
+
+        // Loop until the market is open
+        while (!isMarketOpen(currentDay)) {
+            LocalDate previousDate = currentDay.toDate().minusDays(1);
+            currentDay = new Jour(previousDate.getYear(), previousDate.getDayOfYear());
+        }
+
+        // Return the value for the first open market day
+        if (this.mapCours.containsKey(currentDay)) {
+            return this.mapCours.get(currentDay);
         } else {
             return DEFAULT_ACTION_VALUE;
         }
+    }
+
+    /**
+     * Check if the market is open on a given day.
+     * @param j: the day to check
+     * @return true if the market is open, false otherwise
+     */
+    private boolean isMarketOpen(Jour j) {
+        LocalDate date = j.toDate();
+
+        if (date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            return false;
+        }
+
+        Set<LocalDate> holidays = Set.of(
+                LocalDate.of(j.getYear(), 1, 1),  // New Year's Day
+                LocalDate.of(j.getYear(), 12, 25), // Christmas
+                LocalDate.of(j.getYear(), 7, 14) // Bastille Day
+        );
+
+        return !holidays.contains(date);
     }
 }

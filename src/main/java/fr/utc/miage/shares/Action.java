@@ -45,15 +45,18 @@ public abstract class Action {
      *
      * @param libelle the name of the action object
      */
-    protected Action(final String libelle) {
+    protected Action(final String libelle) throws IllegalArgumentException {
+        if (Objects.isNull(libelle)) {
+            throw new IllegalArgumentException("L'argument 'libelle' can't be null");
+        }
         this.libelle = libelle;
     }
 
     /**
      * Provides the value of the action object for a given day.
      *
-     * @param j
-     * @return
+     * @param j given day
+     * @return float
      */
     public abstract float valeur(Jour j);
 
