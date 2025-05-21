@@ -27,13 +27,13 @@ public class ActionComposee extends Action {
 
     private static final int DEFAULT_ACTION_VALUE = 0;
 
-    private Map<ActionSimple, Double> mapProportion = new HashMap<>();
+    private Map<ActionSimple, Float> mapProportion = new HashMap<>();
 
     // attribut lien
     private final Map<Jour, Float> mapCours;
 
     // constructeur
-    public ActionComposee(final String libelle, Map<ActionSimple, Double> mapProportion) {
+    public ActionComposee(final String libelle, Map<ActionSimple, Float> mapProportion) {
         // Action simple initialisée comme 1 action
         super(libelle);
         // init spécifique

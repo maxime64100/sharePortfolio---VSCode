@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class PortefeuilleTest {
@@ -31,10 +31,10 @@ public class PortefeuilleTest {
         ActionSimple france3 = new ActionSimple("France 3");
         ActionSimple france5 = new ActionSimple("France 5");
 
-        Map<ActionSimple, Double> composition = new HashMap<>();
-        composition.put(france2, 0.35);
-        composition.put(france3, 0.50);
-        composition.put(france5, 0.15);
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 0.35f);
+        composition.put(france3, 0.50f);
+        composition.put(france5, 0.15f);
 
         ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
 
@@ -51,10 +51,10 @@ public class PortefeuilleTest {
         ActionSimple france3 = new ActionSimple("France 3");
         ActionSimple france5 = new ActionSimple("France 5");
 
-        Map<ActionSimple, Double> composition = new HashMap<>();
-        composition.put(france2, 0.35);
-        composition.put(france3, 0.50);
-        composition.put(france5, 0.15);
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 0.35f);
+        composition.put(france3, 0.50f);
+        composition.put(france5, 0.15f);
 
         ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
 
@@ -63,5 +63,22 @@ public class PortefeuilleTest {
         portefeuille.acheter(franceTelevision, 3);
 
         assertEquals(5, portefeuille.getQuantite(franceTelevision));
+    }
+
+    @Test
+    void testAcheterActionAvecQuantiteNulle() {
+        ActionSimple france2 = new ActionSimple("France 2");
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 1.0f);
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
+
+        Portefeuille portefeuille = new Portefeuille();
+
+        try {
+            portefeuille.acheter(franceTelevision, 0);
+            fail("Une exception aurait dû être levée pour une quantité nulle.");
+        } catch (IllegalArgumentException e) {
+            assertEquals("La quantité doit être positive.", e.getMessage());
+        }
     }
 }
