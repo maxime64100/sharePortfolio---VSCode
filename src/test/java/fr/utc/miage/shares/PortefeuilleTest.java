@@ -18,6 +18,12 @@ package fr.utc.miage.shares;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
 import java.util.Map;
 
 public class PortefeuilleTest {
@@ -108,18 +114,59 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testGetActions() {
+    void testAcheterActionComposeeNonDetenue() {
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        ActionSimple france5 = new ActionSimple("France 5");
 
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 0.35f);
+        composition.put(france3, 0.50f);
+        composition.put(france5, 0.15f);
+
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
+
+        Portefeuille portefeuille = new Portefeuille();
+        portefeuille.acheter(franceTelevision, 2);
+
+        assertEquals(2, portefeuille.getQuantite(franceTelevision));
     }
 
     @Test
-    void testGetQuantite() {
+    void testAcheterActionComposeeDetenue() {
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        ActionSimple france5 = new ActionSimple("France 5");
 
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 0.35f);
+        composition.put(france3, 0.50f);
+        composition.put(france5, 0.15f);
+
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
+
+        Portefeuille portefeuille = new Portefeuille();
+        portefeuille.acheter(franceTelevision, 2);
+        portefeuille.acheter(franceTelevision, 3);
+
+        assertEquals(5, portefeuille.getQuantite(franceTelevision));
     }
 
     @Test
-    void testValeur() {
+    void testAcheterActionAvecQuantiteNulle() {
+        ActionSimple france2 = new ActionSimple("France 2");
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 1.0f);
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
 
+        Portefeuille portefeuille = new Portefeuille();
+
+        try {
+            portefeuille.acheter(franceTelevision, 0);
+            fail("Une exception aurait dû être levée pour une quantité nulle.");
+        } catch (IllegalArgumentException e) {
+            assertEquals("La quantité doit être positive.", e.getMessage());
+        }
     }
 
     @Test
@@ -151,8 +198,8 @@ public class PortefeuilleTest {
         ActionSimple france3 = new ActionSimple("France 3");
         Action tisseo = new ActionSimple("Tisseo");
         Map<ActionSimple, Float> props = Map.of(
-            france2, 0.4f,
-            france3, 0.6f
+                france2, 0.4f,
+                france3, 0.6f
         );
         Action franceTelevision = new ActionComposee("France Television", props);
         portefeuille.acheter(france2, DEFAULT_QUANTITE);
