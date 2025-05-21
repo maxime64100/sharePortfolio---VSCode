@@ -64,4 +64,18 @@ public class Portefeuille {
     public int getQuantite(Action action) {
         return actions.getOrDefault(action, 0);
     }
+
+    public String afficherPortefeuille() {
+        StringBuilder sb = new StringBuilder("Contenu du portefeuille :\n");
+        for (Map.Entry<Action, Integer> entry : actions.entrySet()) {
+            Action action = entry.getKey();
+            int quantite = entry.getValue();
+            sb.append(action.toString())
+              .append(" - Quantité : ")
+              .append(quantite)
+              .append("\n");
+        }
+        return sb.toString();
+    }
+    
 }
