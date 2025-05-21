@@ -18,29 +18,50 @@ package fr.utc.miage.shares;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class PortefeuilleTest {
 
     @Test
     void testAcheterActionComposeeNonDetenue() {
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        ActionSimple france5 = new ActionSimple("France 5");
+
+        Map<ActionSimple, Double> composition = new HashMap<>();
+        composition.put(france2, 0.35);
+        composition.put(france3, 0.50);
+        composition.put(france5, 0.15);
+
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
+
         Portefeuille portefeuille = new Portefeuille();
-        Action action = new ActionComposee("Action composée", new HashMap<>());
-        portefeuille.acheter(action, 10);
-        assert (portefeuille.getQuantite(action) == 10);
+        portefeuille.acheter(franceTelevision, 2);
+
+        assertEquals(2, portefeuille.getQuantite(franceTelevision));
     }
 
 
     @Test
     void testAcheterActionComposeeDetenue() {
-        Portefeuille portefeuille = new Portefeuille();
-        Action action1 = new ActionComposee("Action composée 1", new HashMap<>());
-        Action action2 = new ActionComposee("Action composée 2", new HashMap<>());
-        portefeuille.acheter(action1, 10);
-        portefeuille.acheter(action2, 20);
-        portefeuille.acheter(action1, 30);
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        ActionSimple france5 = new ActionSimple("France 5");
 
-        assert (portefeuille.getQuantite(action1) == 40);
-        assert (portefeuille.getQuantite(action2) == 20);
+        Map<ActionSimple, Double> composition = new HashMap<>();
+        composition.put(france2, 0.35);
+        composition.put(france3, 0.50);
+        composition.put(france5, 0.15);
+
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
+
+        Portefeuille portefeuille = new Portefeuille();
+        portefeuille.acheter(franceTelevision, 2);
+        portefeuille.acheter(franceTelevision, 3);
+
+        assertEquals(5, portefeuille.getQuantite(franceTelevision));
     }
 }
