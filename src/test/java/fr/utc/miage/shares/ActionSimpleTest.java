@@ -43,7 +43,7 @@ class ActionSimpleTest {
     }
 
     @Test
-    void dateFutureSansValeurDisponible() {
+    void valeurActionSimpleDateFutureSansValeurDisponible() {
         // Arrange
         action.enrgCours(new Jour(2023, 122), 150.0f);
 

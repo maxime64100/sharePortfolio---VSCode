@@ -72,27 +72,18 @@ public class ActionSimple extends Action {
      * @return true if the market is open, false otherwise
      */
     private boolean isMarketOpen(Jour j) {
-        // Convert Jour to LocalDate
         LocalDate date = j.toDate();
 
-        // Check if the day is a Sunday
         if (date.getDayOfWeek() == DayOfWeek.SUNDAY) {
             return false;
         }
 
-        // Define a set of holidays (example: LocalDate objects)
         Set<LocalDate> holidays = Set.of(
                 LocalDate.of(j.getYear(), 1, 1),  // New Year's Day
                 LocalDate.of(j.getYear(), 12, 25), // Christmas
                 LocalDate.of(j.getYear(), 7, 14) // Bastille Day
         );
 
-        // Check if the day is a holiday
-        if (holidays.contains(date)) {
-            return false;
-        }
-
-        // If not a Sunday or holiday, the market is open
-        return true;
+        return !holidays.contains(date);
     }
 }
