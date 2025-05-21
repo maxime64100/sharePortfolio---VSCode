@@ -15,9 +15,42 @@
  */
 package fr.utc.miage.shares;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class PortefeuilleTest {
+    private static final String FOO_SHARE1 = "Foo Share 1";
+    private static final String FOO_SHARE2 = "Foo Share 2";
+    private static final int CURRENT_YEAR = 2025;
+    private static final int CURRENT_DAY = 140;
+    private static final float SHARE_VALUE1 = 25.0f;
+    private static final float SHARE_VALUE2 = 35.0f;
+    private static final float SHARE_VALUE3 = 45.0f;
+    private static final int QUANTITY_VALUE1 = 1;
+    private static final int QUANTITY_VALUE2 = 2;
+
+    private static ActionSimple actionSimple1;
+    private static ActionSimple actionSimple2;
+    private static final Jour jour1 = new Jour(CURRENT_YEAR, CURRENT_DAY);
+    private static final Jour jour2 = new Jour(CURRENT_YEAR, CURRENT_DAY+1);
+    private static final Jour jour3 = new Jour(CURRENT_YEAR, CURRENT_DAY+2);
+
+    private static Portefeuille portefeuille;
+
+
+    private void setupActions() {
+        actionSimple1 = new ActionSimple(FOO_SHARE1);
+        actionSimple2 = new ActionSimple(FOO_SHARE2);
+
+        actionSimple1.enrgCours(jour1, SHARE_VALUE1);
+        actionSimple1.enrgCours(jour2, SHARE_VALUE2);
+        actionSimple1.enrgCours(jour3, SHARE_VALUE3);
+
+        actionSimple2.enrgCours(jour1, SHARE_VALUE1);
+        actionSimple2.enrgCours(jour2, SHARE_VALUE2);
+        actionSimple2.enrgCours(jour3, SHARE_VALUE3);
+    }
+
     @Test
     void testAcheterActionSimpleNonDetennue() {
         Action action = new ActionSimple("Action1");
@@ -85,7 +118,23 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVendre() {
+    void testVendreActionSimplePossedeDoitMarcher() {
+        setupActions();
+        portefeuille = new Portefeuille();
+        portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
+        portefeuille.acheter(actionSimple2, QUANTITY_VALUE2);
+        portefeuille.vendreUne(actionSimple2);
+        Assertions.assertAll(
+                ()->Assertions.assertEquals(portefeuille.getActions().get(actionSimple1), QUANTITY_VALUE1),
+                ()->Assertions.assertEquals(portefeuille.getActions().get(actionSimple2), QUANTITY_VALUE1)
+        );
+    }
 
+    @Test
+    void testVendreActionSimpeNonPossedeDoitEchoue() {
+        setupActions();
+        portefeuille = new Portefeuille();
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> portefeuille.vendreUne(actionSimple1));
     }
 }
