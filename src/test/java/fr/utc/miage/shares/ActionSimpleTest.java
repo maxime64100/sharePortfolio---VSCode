@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 package fr.utc.miage.shares;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ActionSimpleTest {
+
+    private static final ActionSimple action = new ActionSimple("APPL");
     private static final String FOO_SHARE1 = "Foo Share 1";
     private static final String FOO_SHARE2 = "Foo Share 2";
+    private static final int LAST_YEAR = 2024;
     private static final int CURRENT_YEAR = 2025;
     private static final int CURRENT_DAY = 140;
+    private static final int LAST_DAY = 366;
+    private static final int FIRST_DAY = 1;
     private static final float SHARE_VALUE1 = 25.0f;
     private static final float SHARE_VALUE2 = 35.0f;
     private static final float SHARE_VALUE3 = 45.0f;
@@ -32,7 +38,6 @@ class ActionSimpleTest {
     private static final Jour jour1 = new Jour(CURRENT_YEAR, CURRENT_DAY);
     private static final Jour jour2 = new Jour(CURRENT_YEAR, CURRENT_DAY+1);
     private static final Jour jour3 = new Jour(CURRENT_YEAR, CURRENT_DAY+2);
-
 
     private void setupActions() {
         actionSimple1 = new ActionSimple(FOO_SHARE1);
@@ -47,34 +52,64 @@ class ActionSimpleTest {
     }
 
     @Test
-    public void testConstructorWithGoodValuesShouldWork() {
+    void valeurActionSimpleDatePrecise() {
+        // Arrange
+        action.enrgCours(new Jour(CURRENT_YEAR, CURRENT_DAY), SHARE_VALUE1);
+
+        // Assert
+        Assertions.assertEquals(SHARE_VALUE1, action.valeur(new Jour(CURRENT_YEAR, CURRENT_DAY)));
+    }
+
+    @Test
+    void valeurActionSimpleJourFerieMarcheFerme() {
+        // Arrange
+        action.enrgCours(new Jour(LAST_YEAR, LAST_DAY), SHARE_VALUE1); // December 31, 2024 (leap year)
+        action.enrgCours(new Jour(CURRENT_YEAR, FIRST_DAY), ActionSimple.DEFAULT_ACTION_VALUE);   // January 1, 2025
+
+        // Assert
+        Assertions.assertEquals(SHARE_VALUE1, action.valeur(new Jour(CURRENT_YEAR, FIRST_DAY)));
+    }
+
+    @Test
+    void valeurActionSimpleDateFutureSansValeurDisponible() {
+        // Arrange
+        action.enrgCours(new Jour(CURRENT_YEAR, CURRENT_DAY), SHARE_VALUE1);
+
+        // Assert
+        Assertions.assertEquals(ActionSimple.DEFAULT_ACTION_VALUE, action.valeur(new Jour(LAST_YEAR, FIRST_DAY)));
+    }
+
+    @Test
+    void testConstructorWithGoodValuesShouldWork() {
         Assertions.assertDoesNotThrow(() -> new ActionSimple(FOO_SHARE1));
     }
 
     @Test
-    public void testConstructorWithBadValuesShouldFail() {
+    void testConstructorWithBadValuesShouldFail() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new ActionSimple(null));
     }
 
     @Test
-    public void testEnrgCoursAlreadySet() {
+    void testEnrgCoursAlreadySet() {
         setupActions();
         actionSimple1.enrgCours(jour1, SHARE_VALUE2);
         Assertions.assertNotEquals(SHARE_VALUE2, actionSimple1.valeur(jour1));
     }
 
     @Test
-    public void testGetValeurWithGoodValue() {
+    void testGetValeurWithGoodValue() {
         setupActions();
         Assertions.assertAll(
-                ()-> Assertions.assertEquals(SHARE_VALUE1, actionSimple1.valeur(jour1)),
-                ()-> Assertions.assertEquals(SHARE_VALUE2, actionSimple2.valeur(jour2))
+                ()-> assertEquals(SHARE_VALUE1, actionSimple1.valeur(jour1)),
+                ()-> assertEquals(SHARE_VALUE2, actionSimple2.valeur(jour2))
         );
     }
 
     @Test
-    public void testGetValeurWithBadValue() {
+    void testGetValeurWithBadValue() {
         setupActions();
-        Assertions.assertEquals(ActionSimple.DEFAULT_ACTION_VALUE, actionSimple2.valeur(jour3));
+        assertEquals(ActionSimple.DEFAULT_ACTION_VALUE, actionSimple2.valeur(jour3));
     }
+
 }
+
