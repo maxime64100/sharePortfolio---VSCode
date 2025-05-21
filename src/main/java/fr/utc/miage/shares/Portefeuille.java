@@ -30,7 +30,6 @@ public class Portefeuille {
 
     /**
      * Constructeur de la classe Portefeuille.
-     *
      * Initialise le portefeuille avec une map vide d'actions.
      */
     public Portefeuille() {
