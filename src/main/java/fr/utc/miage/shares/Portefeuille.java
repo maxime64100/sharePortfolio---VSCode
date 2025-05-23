@@ -15,7 +15,10 @@
  */
 package fr.utc.miage.shares;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +30,8 @@ public class Portefeuille {
      * Map d'actions et de quantités : clé = action, valeur = quantité.
      */
     private final Map<Action, Integer> actions;
+    private final List<Transaction> historique = new ArrayList<>();
+
 
     /**
      * Constructeur de la classe Portefeuille.
@@ -46,7 +51,9 @@ public class Portefeuille {
         if (quantite <= 0) {
             throw new IllegalArgumentException("La quantité doit être positive.");
         }
+        Jour jour = new Jour(LocalDate.now().getYear(), LocalDate.now().getDayOfYear());
         actions.put(action, actions.getOrDefault(action, 0) + quantite);
+        historique.add(new Transaction(Transaction.Type.ACHAT, action, quantite, jour));
     }
 
     public void vendreQuantiteMax(Action action) {
@@ -82,7 +89,9 @@ public class Portefeuille {
         if (quantite == quantiteActuelle) {
             actions.remove(action);
         } else {
+            Jour jour = new Jour(LocalDate.now().getYear(), LocalDate.now().getDayOfYear());
             actions.put(action, quantiteActuelle - quantite);
+            historique.add(new Transaction(Transaction.Type.VENTE, action, quantite, jour));
         }
     }
 
@@ -122,5 +131,9 @@ public class Portefeuille {
                     .append("\n");
         }
         return sb.toString();
+    }
+
+    public List<Transaction> getHistorique() {
+        return new ArrayList<>(historique); // copie défensive
     }
 }
