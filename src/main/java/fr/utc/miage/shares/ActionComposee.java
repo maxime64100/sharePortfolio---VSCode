@@ -65,4 +65,13 @@ public class ActionComposee extends Action {
         }
         return valeurActionComposee;
     }
+
+    /**
+     * Récupération des actions qui composent l'action composée
+     *
+     * @return la map des actions simples et de leur proportion
+     */
+    public Map<ActionSimple, Float> getMapProportion() {
+        return mapProportion;
+    }
 }

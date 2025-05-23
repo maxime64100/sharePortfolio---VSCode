@@ -65,6 +65,11 @@ public class Marche {
                 .collect(Collectors.toList());
     }
 
+    public boolean contient(Action action) {
+        return actions.contains(action);
+    }
+    
+
 
 
     @Override
