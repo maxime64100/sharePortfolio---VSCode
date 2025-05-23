@@ -58,12 +58,12 @@ public class ActionSimple extends Action {
             currentDay = new Jour(previousDate.getYear(), previousDate.getDayOfYear());
         }
 
-        // Return the value for the first open market day
-        if (this.mapCours.containsKey(currentDay)) {
-            return this.mapCours.get(currentDay);
-        } else {
-            return DEFAULT_ACTION_VALUE;
+        if (!this.mapCours.containsKey(currentDay)) {
+            throw new IllegalStateException("Aucun cours disponible pour le jour : " + currentDay);
         }
+
+        return this.mapCours.get(currentDay);
+
     }
 
     /**

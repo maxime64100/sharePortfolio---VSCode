@@ -25,7 +25,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.sound.sampled.Port;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -338,4 +337,25 @@ public class PortefeuilleTest {
 
         Assertions.assertEquals(valeurAttendue, portefeuille.valeur(jour));
     }
+
+    @Test
+    void testConnaitreValeurActionComposeeWithCoursActionSimpleManquant() {
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+
+        Jour jour = new Jour(2024, 150);
+
+        france2.enrgCours(jour, 100f);
+
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 0.50f);
+        composition.put(france3, 0.50f);
+
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
+        Portefeuille portefeuille = new Portefeuille();
+        portefeuille.acheter(franceTelevision, 1);
+
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            portefeuille.valeur(jour);
+        });    }
 }
