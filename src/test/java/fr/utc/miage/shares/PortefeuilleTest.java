@@ -15,18 +15,11 @@
  */
 package fr.utc.miage.shares;
 
-import fr.utc.miage.shares.Action;
-import fr.utc.miage.shares.ActionSimple;
-import fr.utc.miage.shares.ActionComposee;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -287,7 +280,23 @@ public class PortefeuilleTest {
         Assertions.assertFalse(portefeuille.getActions().containsKey(actionSimple2));
     }
 
+    @Test
+    void testVendreQuantiteMaxActionPossederDoitFonctionnerEtSupprimerAction() {
+        setupActions();
+        portefeuille = new Portefeuille();
+        portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
+        portefeuille.acheter(actionSimple2, QUANTITY_VALUE2);
+        portefeuille.vendreQuantiteMax(actionSimple2);
+        Assertions.assertFalse(portefeuille.getActions().containsKey(actionSimple2));
+    }
 
+    @Test
+    void testVendreQuantiteMaxActionNonPossederDoitEchouer() {
+        setupActions();
+        portefeuille = new Portefeuille();
+        portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> portefeuille.vendreQuantiteMax(actionSimple2));
+    }
 
     @Test
     void testVendreUneActionComposee() {
