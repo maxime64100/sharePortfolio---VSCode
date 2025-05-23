@@ -262,7 +262,7 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVendrePlusieursActionsSimplesNonPossedeDoitEchoue() {
+    void testVendrePlusieursActionsSimplesNonPossedeeDoitEchoue() {
         setupActions();
         portefeuille = new Portefeuille();
         portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
@@ -281,7 +281,7 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVendreQuantiteMaxActionPossederDoitFonctionnerEtSupprimerAction() {
+    void testVendreQuantiteMaxActionSimplePossedeeDoitFonctionnerEtSupprimerAction() {
         setupActions();
         portefeuille = new Portefeuille();
         portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
@@ -291,7 +291,7 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVendreQuantiteMaxActionNonPossederDoitEchouer() {
+    void testVendreQuantiteMaxActionSimpleNonPossedeeDoitEchouer() {
         setupActions();
         portefeuille = new Portefeuille();
         portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
@@ -443,7 +443,7 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVenreQuantiteMaxActionComposeeDoitFonctionnerEtSupprimerAction() {
+    void testVendreQuantiteMaxActionComposeeDoitFonctionnerEtSupprimerAction() {
         // Given un portefeuille d'action
         Portefeuille portefeuille = new Portefeuille();
         ActionSimple france2 = new ActionSimple("France 2");
