@@ -180,7 +180,7 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVendreUneActionSimpeNonPossedeDoitEchoue() {
+    void testVendrePlusDActionSimpleQuePossedeeDoitEchouer() {
         setupActions();
         portefeuille = new Portefeuille();
         Assertions.assertThrows(IllegalArgumentException.class,
@@ -195,6 +195,15 @@ public class PortefeuilleTest {
         portefeuille.acheter(actionSimple2, QUANTITY_VALUE2);
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> portefeuille.vendre(actionSimple1, QUANTITY_VALUE2));
+    }
+
+    @Test
+    void testVendrePlusieursActionsSimplesNonPossedeDoitEchoue() {
+        setupActions();
+        portefeuille = new Portefeuille();
+        portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> portefeuille.vendre(actionSimple2, QUANTITY_VALUE2));
     }
 
     @Test
