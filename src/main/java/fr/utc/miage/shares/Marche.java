@@ -3,6 +3,7 @@ package fr.utc.miage.shares;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,6 +18,18 @@ public class Marche {
     private LocalTime heureOuverture;
     private LocalTime heureFermeture;
     private Set<Action> actions; // ou List si ordre important
+
+    public Marche(String id, String nom, String pays, String devise, ZoneId fuseauHoraire,
+                  LocalTime heureOuverture, LocalTime heureFermeture) {
+        this.id = id;
+        this.nom = nom;
+        this.pays = pays;
+        this.devise = devise;
+        this.fuseauHoraire = fuseauHoraire;
+        this.heureOuverture = heureOuverture;
+        this.heureFermeture = heureFermeture;
+        this.actions = new HashSet<>();
+    }
 
 
     public boolean estOuvert(LocalTime maintenant) {
@@ -36,6 +49,8 @@ public class Marche {
                 .sorted(Comparator.comparing(Action::getLibelle))
                 .collect(Collectors.toList());
     }
+
+
 
     @Override
     public String toString() {
