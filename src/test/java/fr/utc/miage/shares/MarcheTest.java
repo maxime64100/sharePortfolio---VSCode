@@ -98,16 +98,16 @@ class MarcheTest {
     void testListerActionsParNom() {
         // Arrange
         Marche marche = new Marche(ID_MARCHE, NOM_MARCHE, PAYS, DEVISE, FUSEAU, OUVERTURE, FERMETURE);
-        marche.ajouterAction(ACTION1);
-        marche.ajouterAction(ACTION2);
-        marche.ajouterAction(ACTION3);
-        marche.ajouterAction(ACTION4);
+        marche.ajouterAction(ACTION1); // AHLP
+        marche.ajouterAction(ACTION2); // MICR
+        marche.ajouterAction(ACTION3); // GOOGL
+        marche.ajouterAction(ACTION4); // AMZN
 
         // Act
         List<Action> sortedActions = marche.listerActionsParNom();
 
         // Assert
-        assertEquals(List.of(ACTION2, ACTION4, ACTION3, ACTION1), sortedActions);
+        assertEquals(List.of(ACTION1, ACTION4, ACTION3, ACTION2), sortedActions); // Alphabetical order
     }
 
     @Test
