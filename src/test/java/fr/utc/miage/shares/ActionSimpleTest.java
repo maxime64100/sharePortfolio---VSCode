@@ -76,7 +76,9 @@ class ActionSimpleTest {
         action.enrgCours(new Jour(CURRENT_YEAR, CURRENT_DAY), SHARE_VALUE1);
 
         // Assert
-        Assertions.assertEquals(ActionSimple.DEFAULT_ACTION_VALUE, action.valeur(new Jour(LAST_YEAR, FIRST_DAY)));
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            Assertions.assertEquals(ActionSimple.DEFAULT_ACTION_VALUE, action.valeur(new Jour(LAST_YEAR, FIRST_DAY)));
+        });
     }
 
     @Test
@@ -108,7 +110,10 @@ class ActionSimpleTest {
     @Test
     void testGetValeurWithBadValue() {
         setupActions();
-        assertEquals(ActionSimple.DEFAULT_ACTION_VALUE, actionSimple2.valeur(jour3));
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            assertEquals(ActionSimple.DEFAULT_ACTION_VALUE, actionSimple2.valeur(jour3));
+        });
+
     }
 
 }

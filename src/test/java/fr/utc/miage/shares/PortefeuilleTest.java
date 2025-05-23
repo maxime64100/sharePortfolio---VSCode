@@ -350,6 +350,53 @@ public class PortefeuilleTest {
     }
 
     @Test
+    void testConnaitreValeurActionComposee() {
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        ActionSimple france5 = new ActionSimple("France 5");
+
+        Jour jour = new Jour(2024, 120);
+
+        france2.enrgCours(jour, 100f);
+        france3.enrgCours(jour, 200f);
+        france5.enrgCours(jour, 300f);
+
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 0.35f);
+        composition.put(france3, 0.50f);
+        composition.put(france5, 0.15f);
+
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
+        Portefeuille portefeuille = new Portefeuille();
+        portefeuille.acheter(franceTelevision, 1);
+
+        float valeurAttendue = 0.35f * 100f + 0.5f * 200f + 0.15f * 300f;
+
+        Assertions.assertEquals(valeurAttendue, portefeuille.valeur(jour));
+    }
+
+    @Test
+    void testConnaitreValeurActionComposeeWithCoursActionSimpleManquant() {
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+
+        Jour jour = new Jour(2024, 150);
+
+        france2.enrgCours(jour, 100f);
+
+        Map<ActionSimple, Float> composition = new HashMap<>();
+        composition.put(france2, 0.50f);
+        composition.put(france3, 0.50f);
+
+        ActionComposee franceTelevision = new ActionComposee("France télévision", composition);
+        Portefeuille portefeuille = new Portefeuille();
+        portefeuille.acheter(franceTelevision, 1);
+
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            portefeuille.valeur(jour);
+        });    }
+
+    @Test
     void testVendrePlusieursActionsComposees() {
         // Given un portefeuille d'action
         Portefeuille portefeuille = new Portefeuille();
