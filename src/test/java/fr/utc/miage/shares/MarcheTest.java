@@ -20,7 +20,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -180,5 +182,42 @@ class MarcheTest {
         // Assert
         assertTrue(marche.listerActionsParNom().isEmpty());
     }
+
+    @Test
+    void testVerifierSiActionsDansActionComposeeSontSurLaPlaceDeMarche() {
+    // Arrange
+    Marche marche = new Marche(ID_MARCHE, NOM_MARCHE, PAYS, DEVISE, FUSEAU, OUVERTURE, FERMETURE);
+    
+    ActionSimple a1 = new ActionSimple("A1");
+    ActionSimple a2 = new ActionSimple("A2");
+    ActionSimple a3 = new ActionSimple("A3");
+
+    marche.ajouterAction(a1);
+    marche.ajouterAction(a2);
+
+    // Crée une ActionComposee avec A1 et A2 (présentes)
+    Map<ActionSimple, Float> propsOk = new HashMap<>();
+    propsOk.put(a1, 0.5f);
+    propsOk.put(a2, 0.5f);
+    ActionComposee actionComposeeOk = new ActionComposee("COMPOSEE_OK", propsOk);
+
+    // Crée une autre ActionComposee avec une action absente (A3)
+    Map<ActionSimple, Float> propsKo = new HashMap<>();
+    propsKo.put(a1, 0.5f);
+    propsKo.put(a3, 0.5f);
+    ActionComposee actionComposeeKo = new ActionComposee("COMPOSEE_KO", propsKo);
+
+    // Act & Assert
+    // Toutes les actions de actionComposeeOk sont bien dans le marché
+    boolean toutesPresentesOk = actionComposeeOk.getMapProportion().keySet().stream()
+        .allMatch(marche::contient);
+    assertTrue(toutesPresentesOk);
+
+    // Une des actions de actionComposeeKo est absente du marché
+    boolean toutesPresentesKo = actionComposeeKo.getMapProportion().keySet().stream()
+        .allMatch(marche::contient);
+    assertFalse(toutesPresentesKo);
+}
+
 
 }
