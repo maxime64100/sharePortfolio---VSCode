@@ -49,7 +49,7 @@ public class Portefeuille {
         actions.put(action, actions.getOrDefault(action, 0) + quantite);
     }
 
-    public void vendreQuantiteMax(Action action) {
+    public void vendreQuantiteMax(Action action, Marche marche) {
         if (!actions.containsKey(action)) {
             throw new IllegalArgumentException("Action non détenue dans le portefeuille.");
         }
@@ -61,7 +61,7 @@ public class Portefeuille {
      *
      * @param action l'action à vendre
      */
-    public void vendreUne(Action action) {
+    public void vendreUne(Action action, Marche marche) {
         vendre(action, 1);
     }
 
@@ -69,9 +69,10 @@ public class Portefeuille {
      * Vend une certaine quantité d'action du portefeuille.
      *
      * @param action l'action à vendre
+     * @param marche le marché sur lequel l'action est vendue
      * @param quantite la quantité d'action à vendre
      */
-    public void vendre(Action action, int quantite) {
+    public void vendre(Action action, Marche marche, int quantite) {
         if (!actions.containsKey(action)) {
             throw new IllegalArgumentException("Action non détenue dans le portefeuille.");
         }

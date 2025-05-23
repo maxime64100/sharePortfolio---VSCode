@@ -15,6 +15,8 @@
  */
 package fr.utc.miage.shares;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +44,14 @@ public class PortefeuilleTest {
     private static final Jour jour1 = new Jour(CURRENT_YEAR, CURRENT_DAY);
     private static final Jour jour2 = new Jour(CURRENT_YEAR, CURRENT_DAY+1);
     private static final Jour jour3 = new Jour(CURRENT_YEAR, CURRENT_DAY+2);
+
+    private static final String ID_MARCHE = "EUNXT";
+    private static final String NOM_MARCHE = "Euronext";
+    private static final String PAYS = "France";
+    private static final String DEVISE = "EUR";
+    private static final ZoneId FUSEAU = ZoneId.of("Europe/Paris");
+    private static final LocalTime OUVERTURE = LocalTime.of(9, 0);
+    private static final LocalTime FERMETURE = LocalTime.of(17, 30);
 
     private static Portefeuille portefeuille;
 
@@ -533,5 +543,23 @@ public class PortefeuilleTest {
         // When je vends toutes mes actions composées franceTelevision (que je ne possède pas)
         // Then levée d'une exception, car non possédée
         Assertions.assertThrows(IllegalArgumentException.class, () -> portefeuille.vendreQuantiteMax(franceTelevision));
+    }
+
+    @Test
+    void testVendreActionSimpleSurUnMarcheDoitFonctionner() {
+        // Given un portefeuille d'action et un marche
+        Portefeuille portefeuille = new Portefeuille();
+        ActionSimple france2 = new ActionSimple("France 2");
+        portefeuille.acheter(france2, DEFAULT_QUANTITE);
+
+        Marche marche = new Marche(ID_MARCHE, NOM_MARCHE, PAYS, DEVISE, FUSEAU, OUVERTURE, FERMETURE);
+        marche.ajouterAction(france2);
+
+        // When je vends une action simple
+        portefeuille.vendre(france2, marche, 5);
+
+        // Then je ne possède plus cette action dans mon portefeuille
+        Map<Action, Integer> actions = portefeuille.getActions();
+        Assertions.assertFalse(actions.containsKey(france2));
     }
 }

@@ -65,7 +65,14 @@ public class Marche {
                 .collect(Collectors.toList());
     }
 
-
+    /**
+     * Vérifie si l'action est présente dans le marché.
+     * @param action l'action à vérifier
+     * @return
+     */
+    public boolean contientAction(Action action) {
+        return actions.contains(action);
+    }
 
     @Override
     public String toString() {
