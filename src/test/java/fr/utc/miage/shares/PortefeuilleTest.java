@@ -66,24 +66,20 @@ public class PortefeuilleTest {
         Portefeuille portefeuille = new Portefeuille();
         portefeuille.acheter(action, 10);
 
-        assert portefeuille.getActions().containsKey(action);
-        assert portefeuille.getQuantite(action) == 10;
+        assertTrue(portefeuille.getActions().containsKey(action));
+        assertEquals(10, portefeuille.getQuantite(action));
     }
 
     @Test
     void testAcheterActionSimpleDetennue() {
         Action action = new ActionSimple("Action1");
-        Action action2 = new ActionSimple("Action2");
 
         Portefeuille portefeuille = new Portefeuille();
         portefeuille.acheter(action, 10);
-        portefeuille.acheter(action2, 5);
         portefeuille.acheter(action, 5);
 
-        assert portefeuille.getActions().containsKey(action);
-        assert portefeuille.getQuantite(action) == 15;
-        assert portefeuille.getActions().containsKey(action2);
-        assert portefeuille.getQuantite(action2) == 5;
+        assertTrue(portefeuille.getActions().containsKey(action));
+        assertEquals(15, portefeuille.getQuantite(action));
     }
 
     @Test
@@ -94,7 +90,7 @@ public class PortefeuilleTest {
         try {
             portefeuille.acheter(action, 0);
         } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("La quantité doit être positive.");
+            assertEquals("La quantité doit être positive.", e.getMessage());
         }
     }
 
@@ -106,7 +102,7 @@ public class PortefeuilleTest {
         try {
             portefeuille.acheter(action, -5);
         } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("La quantité doit être positive.");
+            assertEquals("La quantité doit être positive.", e.getMessage());
         }
     }
 
@@ -124,9 +120,9 @@ public class PortefeuilleTest {
         portefeuille.acheter(action2, 5);
 
         //Assert
-        assert portefeuille.getActions().size() == 2;
-        assert portefeuille.getQuantite(action1) == 10;
-        assert portefeuille.getQuantite(action2) == 5;
+        assertEquals(2, portefeuille.getActions().size());
+        assertEquals(10, portefeuille.getQuantite(action1));
+        assertEquals(5, portefeuille.getQuantite(action2));
 
     }
 
@@ -146,8 +142,8 @@ public class PortefeuilleTest {
         portefeuille.acheter(actionComposee, 5);
 
         //Assert
-        assert portefeuille.getActions().containsKey(actionComposee);
-        assert portefeuille.getQuantite(actionComposee) == 15;
+        assertTrue(portefeuille.getActions().containsKey(actionComposee));
+        assertEquals(15, portefeuille.getQuantite(actionComposee));
     }
 
     @Test
@@ -168,10 +164,10 @@ public class PortefeuilleTest {
         System.out.println(affichage); // utile pour visualiser pendant le dev
 
         //Assert
-        assert affichage.contains("GOOGLE");
-        assert affichage.contains("FACEBOOK");
-        assert affichage.contains("Quantité : 10");
-        assert affichage.contains("Quantité : 5");
+        assertEquals(true, affichage.contains("GOOGLE"));
+        assertEquals(true, affichage.contains("FACEBOOK"));
+        assertEquals(true, affichage.contains("Quantité : 10"));
+        assertEquals(true, affichage.contains("Quantité : 5"));
     }
 
     @Test
