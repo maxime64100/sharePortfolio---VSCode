@@ -238,8 +238,8 @@ public class PortefeuilleTest {
         portefeuille.acheter(actionSimple2, QUANTITY_VALUE2);
         portefeuille.vendreUne(actionSimple2);
         Assertions.assertAll(
-                ()->Assertions.assertEquals(portefeuille.getActions().get(actionSimple1), QUANTITY_VALUE1),
-                ()->Assertions.assertEquals(portefeuille.getActions().get(actionSimple2), QUANTITY_VALUE1)
+                ()->Assertions.assertEquals(QUANTITY_VALUE1, portefeuille.getActions().get(actionSimple1)),
+                ()->Assertions.assertEquals(QUANTITY_VALUE1, portefeuille.getActions().get(actionSimple2))
         );
     }
 
@@ -440,5 +440,51 @@ public class PortefeuilleTest {
                 () -> Assertions.assertTrue(actions.containsKey(france2)),
                 () -> Assertions.assertTrue(actions.containsKey(france3))
         );
+    }
+
+    @Test
+    void testVenreQuantiteMaxActionComposeeDoitFonctionnerEtSupprimerAction() {
+        // Given un portefeuille d'action
+        Portefeuille portefeuille = new Portefeuille();
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        Map<ActionSimple, Float> props = Map.of(
+                france2, 0.4f,
+                france3, 0.6f
+        );
+        Action franceTelevision = new ActionComposee("France Television", props);
+        portefeuille.acheter(france2, DEFAULT_QUANTITE);
+        portefeuille.acheter(france3, DEFAULT_QUANTITE);
+        portefeuille.acheter(franceTelevision, DEFAULT_QUANTITE);
+
+        // When je vends toutes mes actions composées franceTelevision
+        portefeuille.vendreQuantiteMax(franceTelevision);
+
+        // Then je ne possède plus cette action dans mon portefeuille
+        Map<Action, Integer> actions = portefeuille.getActions();
+        Assertions.assertAll(
+                () -> Assertions.assertFalse(actions.containsKey(franceTelevision)),
+                () -> Assertions.assertTrue(actions.containsKey(france2)),
+                () -> Assertions.assertTrue(actions.containsKey(france3))
+        );
+    }
+
+    @Test
+    void testVendreQuantiteMaxActionComposeeNonPossederDoitEchouer() {
+        // Given un portefeuille d'action
+        Portefeuille portefeuille = new Portefeuille();
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        Map<ActionSimple, Float> props = Map.of(
+                france2, 0.4f,
+                france3, 0.6f
+        );
+        Action franceTelevision = new ActionComposee("France Television", props);
+        portefeuille.acheter(france2, DEFAULT_QUANTITE);
+        portefeuille.acheter(france3, DEFAULT_QUANTITE);
+
+        // When je vends toutes mes actions composées franceTelevision (que je ne possède pas)
+        // Then levée d'une exception, car non possédée
+        Assertions.assertThrows(IllegalArgumentException.class, () -> portefeuille.vendreQuantiteMax(franceTelevision));
     }
 }
