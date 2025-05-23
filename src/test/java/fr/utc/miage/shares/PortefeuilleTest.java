@@ -311,4 +311,70 @@ public class PortefeuilleTest {
         // Then levée d'une exception, car non possédée
         Assertions.assertThrows(IllegalArgumentException.class, () -> portefeuille.vendreUne(franceTelevision));
     }
+
+    @Test
+    void testVendrePlusieursActionsComposees() {
+        // Given un portefeuille d'action
+        Portefeuille portefeuille = new Portefeuille();
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        Map<ActionSimple, Float> props = Map.of(
+                france2, 0.4f,
+                france3, 0.6f
+        );
+        Action franceTelevision = new ActionComposee("France Television", props);
+        portefeuille.acheter(france2, DEFAULT_QUANTITE);
+        portefeuille.acheter(france3, DEFAULT_QUANTITE);
+        portefeuille.acheter(franceTelevision, DEFAULT_QUANTITE);
+
+        // When je vends une action composée
+        portefeuille.vendre(franceTelevision, 2);
+
+        // Then je possède un exemplaire de moins de cette action dans mon portefeuille
+        Map<Action, Integer> actions = portefeuille.getActions();
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(DEFAULT_QUANTITE-2, actions.get(franceTelevision)),
+                () -> Assertions.assertEquals(DEFAULT_QUANTITE, actions.get(france2)),
+                () -> Assertions.assertEquals(DEFAULT_QUANTITE, actions.get(france3))
+        );
+    }
+
+    @Test
+    void testVendrePlusieursActionsComposeesNonPossedees() {
+        // Given un portefeuille d'action
+        Portefeuille portefeuille = new Portefeuille();
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        Map<ActionSimple, Float> props = Map.of(
+                france2, 0.4f,
+                france3, 0.6f
+        );
+        Action franceTelevision = new ActionComposee("France Television", props);
+        portefeuille.acheter(france2, DEFAULT_QUANTITE);
+        portefeuille.acheter(france3, DEFAULT_QUANTITE);
+
+        // When je vends une action composée que je ne possède pas
+        // Then levée d'une exception, car non possédée
+        Assertions.assertThrows(IllegalArgumentException.class, () -> portefeuille.vendre(franceTelevision, 2));
+    }
+
+    @Test
+    void testVendrePlusDActionsComposeesQuePossedees() {
+        // Given un portefeuille d'action
+        Portefeuille portefeuille = new Portefeuille();
+        ActionSimple france2 = new ActionSimple("France 2");
+        ActionSimple france3 = new ActionSimple("France 3");
+        Map<ActionSimple, Float> props = Map.of(
+                france2, 0.4f,
+                france3, 0.6f
+        );
+        Action franceTelevision = new ActionComposee("France Television", props);
+        portefeuille.acheter(france2, DEFAULT_QUANTITE);
+        portefeuille.acheter(france3, DEFAULT_QUANTITE);
+        portefeuille.acheter(franceTelevision, DEFAULT_QUANTITE);
+
+        // When je vends plus d'action composée que possédées
+        // Then levée d'une exception, car je ne possède pas autant d'actions que je veux vendre
+        Assertions.assertThrows(IllegalArgumentException.class, () -> portefeuille.vendre(franceTelevision, DEFAULT_QUANTITE + 1));
+    }
 }
