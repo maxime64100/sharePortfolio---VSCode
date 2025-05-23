@@ -26,7 +26,7 @@ public class Portefeuille {
     /**
      * Map d'actions et de quantités : clé = action, valeur = quantité.
      */
-    private Map<Action, Integer> actions;
+    private final Map<Action, Integer> actions;
 
     /**
      * Constructeur de la classe Portefeuille.
@@ -47,6 +47,13 @@ public class Portefeuille {
             throw new IllegalArgumentException("La quantité doit être positive.");
         }
         actions.put(action, actions.getOrDefault(action, 0) + quantite);
+    }
+
+    public void vendreQuantiteMax(Action action) {
+        if (!actions.containsKey(action)) {
+            throw new IllegalArgumentException("Action non détenue dans le portefeuille.");
+        }
+        vendre(action, actions.get(action));
     }
 
     /**
@@ -110,11 +117,10 @@ public class Portefeuille {
             Action action = entry.getKey();
             int quantite = entry.getValue();
             sb.append(action.toString())
-              .append(" - Quantité : ")
-              .append(quantite)
-              .append("\n");
+                    .append(" - Quantité : ")
+                    .append(quantite)
+                    .append("\n");
         }
         return sb.toString();
     }
-    
 }
