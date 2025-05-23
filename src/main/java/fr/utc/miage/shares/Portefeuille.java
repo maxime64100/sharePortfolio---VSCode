@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 David Navarre &lt;David.Navarre at irit.fr&gt;.
+ * Copyright 2025 Mathys Alzuria, Tom Montbord, Colas Naudi, Mathis Lague, Maxime Fallek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,30 @@ package fr.utc.miage.shares;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Objet Portefeuille : permet de gérer un portefeuille d'actions.
+ */
 public class Portefeuille {
+
+    /**
+     * Map d'actions et de quantités : clé = action, valeur = quantité.
+     */
     private Map<Action, Integer> actions;
 
+    /**
+     * Constructeur de la classe Portefeuille.
+     * Initialise le portefeuille avec une map vide d'actions.
+     */
     public Portefeuille() {
         actions = new HashMap<>();
     }
 
+    /**
+     * Achète une certaine quantité d'action et l'ajoute au portefeuille.
+     *
+     * @param action l'action à acheter
+     * @param quantite la quantité d'action à acheter
+     */
     public void acheter(Action action, int quantite) {
         if (quantite <= 0) {
             throw new IllegalArgumentException("La quantité doit être positive.");
@@ -32,6 +49,21 @@ public class Portefeuille {
         actions.put(action, actions.getOrDefault(action, 0) + quantite);
     }
 
+    /**
+     * Vend une seule action du portefeuille.
+     *
+     * @param action l'action à vendre
+     */
+    public void vendreUne(Action action) {
+        vendre(action, 1);
+    }
+
+    /**
+     * Vend une certaine quantité d'action du portefeuille.
+     *
+     * @param action l'action à vendre
+     * @param quantite la quantité d'action à vendre
+     */
     public void vendre(Action action, int quantite) {
         if (!actions.containsKey(action)) {
             throw new IllegalArgumentException("Action non détenue dans le portefeuille.");
@@ -47,6 +79,12 @@ public class Portefeuille {
         }
     }
 
+    /**
+     * Calcule la valeur totale du portefeuille à une date donnée.
+     *
+     * @param jour la date pour laquelle on veut calculer la valeur
+     * @return la valeur totale du portefeuille
+     */
     public double valeur(Jour jour) {
         double valeurTotale = 0.0;
         for (Map.Entry<Action, Integer> entry : actions.entrySet()) {
@@ -56,6 +94,7 @@ public class Portefeuille {
         }
         return valeurTotale;
     }
+
 
     public Map<Action, Integer> getActions() {
         return new HashMap<>(actions);
