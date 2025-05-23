@@ -23,9 +23,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-import java.util.Map;
-
 public class PortefeuilleTest {
 
     private final Integer DEFAULT_QUANTITE = 10;
@@ -170,7 +167,7 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVendreActionSimplePossedeDoitMarcher() {
+    void testVendreUneActionSimplePossedeDoitMarcher() {
         setupActions();
         portefeuille = new Portefeuille();
         portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
@@ -183,12 +180,34 @@ public class PortefeuilleTest {
     }
 
     @Test
-    void testVendreActionSimpeNonPossedeDoitEchoue() {
+    void testVendreUneActionSimpeNonPossedeDoitEchoue() {
         setupActions();
         portefeuille = new Portefeuille();
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> portefeuille.vendreUne(actionSimple1));
     }
+
+    @Test
+    void testVendreActionSimpleQuantiteNonPossedeDoitEchoue() {
+        setupActions();
+        portefeuille = new Portefeuille();
+        portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
+        portefeuille.acheter(actionSimple2, QUANTITY_VALUE2);
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> portefeuille.vendre(actionSimple1, QUANTITY_VALUE2));
+    }
+
+    @Test
+    void testVendreActionSimpleQuantiteEgaleDoitSupprimerAction() {
+        setupActions();
+        portefeuille = new Portefeuille();
+        portefeuille.acheter(actionSimple1, QUANTITY_VALUE1);
+        portefeuille.acheter(actionSimple2, QUANTITY_VALUE2);
+        portefeuille.vendre(actionSimple2, QUANTITY_VALUE2);
+        Assertions.assertFalse(portefeuille.getActions().containsKey(actionSimple2));
+    }
+
+
 
     @Test
     void testVendreUneActionComposee() {
